@@ -7,15 +7,26 @@
         <meta name="author" content="">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
         <!-- TODO: Cargar CSS Bootstrap (no es necesario el JS) -->
     </head>
 
     <body>
 
-        <h1 id="autor">Autor: TU NOMBRE AQUÍ</h1>
 
+        <h1 id="autor">Autor: Alejandro Ortiz Espinosa</h1>
         <!-- https://vuejs.org/v2/guide/index.html -->
         <div id="app">
+                <div class="jumbotron jumbotron-fluid">
+                            <h1 class="display-4" id="title">{{col.collection.title}}</h1>
+                </div>
+                <div class="card-group" style="margin:0 50px;">
+                    <item-data v-for="item in col.collection.items" v-if="!item.editar"  :pelicula="item" ></item-data>
+                    <edit-form v-else :pelicula="item"></edit-form>
+                    
+                 </div>
+                
             <!--
                  TODO: Aplicación VueJS. Ver archivo ./js/script.js
                - Mostrar el título de la colección dentro de un componente Jumbotron de Bootstrap https://getbootstrap.com/docs/4.0/components/jumbotron/. En su interior habrá un <h1> con id "title" que mostrará el título de la colección
@@ -29,7 +40,16 @@
 
         <!-- Plantilla para el componente edit-form -->
         <script type="text/x-template" id="editForm">
-
+            <div class="card">
+                <div class="card-body">
+                    <dl v-for="dato in pelicula.data">
+                            <dt>{{dato.prompt}}</dt>
+                            <input v-if="dato.prompt != 'Description'" v-model="dato.value" type="text">
+                            <textarea v-else v-model="dato.value" type="text"></textarea>
+                    </dl>
+                    <button v-on:click="closeForm(pelicula)"  class="btn btn-secondary">Guardar</button>
+                </div>
+            </div>
             <!--
                  TODO: Componente edit-form
             -->
@@ -40,6 +60,17 @@
 
         <!-- Plantilla para el componente item-data -->
         <script type="text/x-template" id="itemData">
+                <div class="card">
+                    <div class="card-body">
+                        <dl v-for="dato in pelicula.data">
+                            <dt>{{dato.prompt}}</dt>
+                            <dd>{{dato.value}}</dd>
+                        </dl>
+                        
+                         <a v-bind:href="pelicula.href" class="btn btn-primary">Ver</a>
+                         <button v-on:click="toggleEditFormVisibility(pelicula)"  class="btn btn-secondary">Editar</button>
+                     </div>
+                 </div>
 
             <!--
                  TODO: Componente item-data
@@ -47,7 +78,10 @@
 
         </script>
 
-
+        <script src="https://unpkg.com/vue"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+        <script src="/js/script.js"></script>
+        
         <!-- TODO: Cargar librería VueJS y archivo js/script.js -->
 
     </body>
