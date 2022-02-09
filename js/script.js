@@ -15,7 +15,6 @@ var server_data = {
 		                {name : "director", value : "Peter Jackson", prompt : "Director"},
 		                {name : "datePublished", value : "2001-12-19", prompt : "Release Date"}
                 ],
-                editar:false
 	          },
 	          {
                 href : "https://en.wikipedia.org/wiki/The_Hunger_Games_(film_series)",
@@ -25,7 +24,6 @@ var server_data = {
 		                {name : "director", value : "Gary Ross", prompt : "Director"},
 		                {name : "datePublished", value : "2012-03-12", prompt : "Release Date"}
                 ],
-                editar:false
 	          },
 	          {
                 href : "https://en.wikipedia.org/wiki/Game_of_Thrones",
@@ -35,19 +33,20 @@ var server_data = {
 		                {name : "director", value : "Alan Taylor et al", prompt : "Director"},
 		                {name : "datePublished", value : "2011-04-17", prompt : "Release Date"}
                 ],
-                editar:false
 	          }
         ]
     }
 };
 
+var arrayEdit=[];
+
 
 // TODO: Componente edit-form
 Vue.component('edit-form', {
     template: "#editForm",
-    props: ["pelicula"], methods:{
-        closeForm: function(pelicula){
-            pelicula.editar=false;
+    props: ["pelicula","pos"], methods:{
+        closeForm: function(pos){
+            arrayEdit.splice(arrayEdit.indexOf(pos),1);
         }
     }
 })
@@ -55,13 +54,13 @@ Vue.component('edit-form', {
 // TODO: Componente item-data
 Vue.component('item-data', {
     template: "#itemData",
-    props: ["pelicula"],methods:{
-        toggleEditFormVisibility: function(pelicula){
-            pelicula.editar=true;
-        }/*,
-        formClosed: function(){
-            editar=false;
-        }*/
+    props: ["pelicula","pos"],
+    methods:{
+        toggleEditFormVisibility: function(pos){
+            arrayEdit.push(pos);
+
+
+        }
 
     }
 
@@ -72,7 +71,8 @@ Vue.component('item-data', {
 var app = new Vue({
     el: '#app',
     data: {
-        col: server_data
+        col: server_data,
+        editArr:arrayEdit
     },
     
 });

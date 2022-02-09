@@ -22,8 +22,8 @@
                             <h1 class="display-4" id="title">{{col.collection.title}}</h1>
                 </div>
                 <div class="card-group" style="margin:0 50px;">
-                    <item-data v-for="item in col.collection.items" v-if="!item.editar"  :pelicula="item" ></item-data>
-                    <edit-form v-else :pelicula="item"></edit-form>
+                    <item-data v-for="item in col.collection.items" v-if="!editArr.includes(col.collection.items.indexOf(item))"  :pelicula="item" :pos="col.collection.items.indexOf(item)" ></item-data>
+                    <edit-form v-else :pelicula="item" :pos="col.collection.items.indexOf(item)"></edit-form>
                     
                  </div>
                 
@@ -44,10 +44,10 @@
                 <div class="card-body">
                     <dl v-for="dato in pelicula.data">
                             <dt>{{dato.prompt}}</dt>
-                            <input v-if="dato.prompt != 'Description'" v-model="dato.value" type="text">
-                            <textarea v-else v-model="dato.value" type="text"></textarea>
+                            <input v-if="dato.prompt != 'Description'" v-model="dato.value" type="text" v-bind:id="dato.name+pos">
+                            <textarea v-else v-model="dato.value" type="text" v-bind:id="dato.name+pos"></textarea>
                     </dl>
-                    <button v-on:click="closeForm(pelicula)"  class="btn btn-secondary">Guardar</button>
+                    <button v-on:click="closeForm(pos)"  class="btn btn-secondary">Guardar</button>
                 </div>
             </div>
             <!--
@@ -68,7 +68,7 @@
                         </dl>
                         
                          <a v-bind:href="pelicula.href" class="btn btn-primary">Ver</a>
-                         <button v-on:click="toggleEditFormVisibility(pelicula)"  class="btn btn-secondary">Editar</button>
+                         <button v-on:click="toggleEditFormVisibility(pos)"  class="btn btn-secondary">Editar</button>
                      </div>
                  </div>
 
